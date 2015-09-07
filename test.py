@@ -35,9 +35,7 @@ def NewestDir(directory):
     for dir in glob.glob('*'):
         if os.path.isdir(dir):
             dirs[dir] = os.path.getctime(dir)
-
-    lister = sorted(dirs.iteritems(), key=operator.itemgetter(1))
-    return lister[-1][0]
+    return sorted(dirs.iteritems(), key=operator.itemgetter(1))[-1][0]
 
 def return_emails(path):
     for root, dirs, files in os.walk(path, topdown=False):
