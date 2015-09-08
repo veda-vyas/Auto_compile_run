@@ -53,6 +53,6 @@ return_emails(root_path)
 for email in email_arr:
     return_files(to_compare_email,filename)
     return_files(email,filename)
-    print "done comapring"
+    print "done comaparing"
 print "Done"
     
