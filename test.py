@@ -53,23 +53,22 @@ def return_files(email,extension):
 def file_similarity(path1, path2):
     with open(path1,'rb') as f1:
         with open(path2,'rb') as f2:
-            if f1.read() == f2.read():
-                return "Identical"
-            return "Non-Identical"
+            seq = difflib.SequenceMatcher(None, f1.read(),f2.read())
+            d = seq.ratio()*100
+            return d
 
 return_emails(root_path)
 count = 0
 sim_arr = []
+stor_arr = []
+out = open('output.txt','w')
+out.write("Email\tComparing with\tRatio\n")
 for email in email_arr:
     path1 = return_files(email,filename)
     for to_compare_email in email_arr:
         path2 = return_files(to_compare_email,filename)
-        #print email +', '+ to_compare_email
-        if file_similarity(path1,path2) == "Identical":
-            count+=1
-            sim_arr.append(to_compare_email)
-    print email,"Matches Found: ",count, sim_arr
-    count = 0
-    sim_arr = []
-        #print path1, path2
+        if email != to_compare_email:
+            out.write(str(email) +'\t'+ str(to_compare_email) +'\t'+ str(file_similarity(path1,path2)))
+            out.write('\n')
+    print email
 print "Done"
