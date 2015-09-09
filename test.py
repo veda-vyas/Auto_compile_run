@@ -10,9 +10,8 @@ import filecmp
 email_arr = []
 #stdin = ''
 #stdout = ''
-#stderr = ''
+#stderr = 0''
 root_path = "F:\DigitalWallet"
-to_compare_email = "akhila1912@gmail.com"
 filename = "DigitalWallet.java"
 #out = open('output.txt', 'w')
 #def execute_java(roots):
@@ -43,7 +42,7 @@ def return_emails(path):
     for root, dirs, files in os.walk(path, topdown=False):
         if files != [] and (re.search(r'[\w\.-]+@[\w\.-]+', root)).group(0) not in email_arr:
             email_arr.append((re.search(r'[\w\.-]+@[\w\.-]+', root)).group(0))
-    print email_arr
+    #print email_arr
 
 def return_files(email,extension):
     for root, dirs, files in os.walk(root_path+"\\"+email+"\\"+NewestDir(root_path+"\\"+email), topdown=False): 
@@ -52,15 +51,25 @@ def return_files(email,extension):
                 return root+"\\"+name
 
 def file_similarity(path1, path2):
-    if os.path.getsize(path1) == os.path.getsize(path2):
-        if open(path1,'r').read() == open(path2,'r').read():
-            return True
-        return False
+    with open(path1,'rb') as f1:
+        with open(path2,'rb') as f2:
+            if f1.read() == f2.read():
+                return "Identical"
+            return "Non-Identical"
 
 return_emails(root_path)
+count = 0
+sim_arr = []
 for email in email_arr:
-    path1 = return_files(to_compare_email,filename)
-    path2 = return_files(email,filename)
-    print file_similarity(path1,path2)
-    print "done comaparing"
+    path1 = return_files(email,filename)
+    for to_compare_email in email_arr:
+        path2 = return_files(to_compare_email,filename)
+        #print email +', '+ to_compare_email
+        if file_similarity(path1,path2) == "Identical":
+            count+=1
+            sim_arr.append(to_compare_email)
+    print email,"Matches Found: ",count, sim_arr
+    count = 0
+    sim_arr = []
+        #print path1, path2
 print "Done"
