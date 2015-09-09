@@ -4,6 +4,8 @@ import glob
 import operator
 from subprocess import STDOUT,PIPE
 import re
+import difflib
+import filecmp
 
 email_arr = []
 #stdin = ''
@@ -47,12 +49,18 @@ def return_files(email,extension):
     for root, dirs, files in os.walk(root_path+"\\"+email+"\\"+NewestDir(root_path+"\\"+email), topdown=False): 
         for name in files:
             if name.endswith(extension):
-                print root+"\\"+name
+                return root+"\\"+name
+
+def file_similarity(path1, path2):
+    if os.path.getsize(path1) == os.path.getsize(path2):
+        if open(path1,'r').read() == open(path2,'r').read():
+            return True
+        return False
 
 return_emails(root_path)
 for email in email_arr:
-    return_files(to_compare_email,filename)
-    return_files(email,filename)
+    path1 = return_files(to_compare_email,filename)
+    path2 = return_files(email,filename)
+    print file_similarity(path1,path2)
     print "done comaparing"
 print "Done"
-    
