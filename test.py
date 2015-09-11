@@ -62,13 +62,17 @@ count = 0
 sim_arr = []
 stor_arr = []
 out = open('output.txt','w')
-out.write("Email\tComparing with\tRatio\n")
-for email in email_arr:
-    path1 = return_files(email,filename)
+out.write("Email\t")
+for emails in email_arr:
+    out.write(str(emails)+'\t')
+out.write('\n')
+for emails in email_arr:
+    out.write(str(emails)+'\t')
+    path1 = return_files(emails,filename)
     for to_compare_email in email_arr:
         path2 = return_files(to_compare_email,filename)
-        if email != to_compare_email:
-            out.write(str(email) +'\t'+ str(to_compare_email) +'\t'+ str(file_similarity(path1,path2)))
-            out.write('\n')
-    print email
+        out.write(str(file_similarity(path1,path2))+'\t')
+    out.write('\n')
+    print emails
+out.close()
 print "Done"
