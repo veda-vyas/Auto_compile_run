@@ -6,6 +6,7 @@ from subprocess import STDOUT,PIPE
 import re
 import difflib
 import filecmp
+from Levenshtein import distance
 
 email_arr = []
 #stdin = ''
@@ -62,17 +63,25 @@ count = 0
 sim_arr = []
 stor_arr = []
 out = open('output.txt','w')
+out2 = open('lev_output.txt', 'w')
 out.write("Email\t")
+out2.write("Email\t")
 for emails in email_arr:
     out.write(str(emails)+'\t')
+    out2.write(str(emails)+'\t')
 out.write('\n')
+out2.write('\n')
 for emails in email_arr:
     out.write(str(emails)+'\t')
+    out2.write(str(emails)+'\t')
     path1 = return_files(emails,filename)
     for to_compare_email in email_arr:
         path2 = return_files(to_compare_email,filename)
         out.write(str(file_similarity(path1,path2))+'\t')
+        out2.write(str(distance(path1, path2))+'\t')
+        #print distance(path1, path2), distance(path2, path1)
     out.write('\n')
+    out2.write('\n')
     print emails
 out.close()
 print "Done"
