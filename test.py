@@ -57,6 +57,10 @@ def file_similarity(path1, path2):
             seq = difflib.SequenceMatcher(None, f1.read(),f2.read())
             d = seq.ratio()*100
             return d
+def lev_similarity(path1, path2):
+    with open(path1,'rb') as f1:
+        with open(path2,'rb') as f2:
+            return int(distance((f1.read()).strip(' \t\n\r'),(f2.read()).strip(' \t\n\r'))/100)
 
 return_emails(root_path)
 count = 0
@@ -81,7 +85,7 @@ for emails in email_arr:
         for name in sim_arr:
             path2 = return_files(name,filename)
             out.write(str(file_similarity(path1,path2))+'\t')
-            out2.write(str(distance(path1, path2))+'\t')
+            out2.write(str(lev_similarity(path1,path2))+'\t')
         #print sim_arr
         i += 1
         #print distance(path1, path2), distance(path2, path1)
