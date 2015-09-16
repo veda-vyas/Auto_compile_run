@@ -12,8 +12,8 @@ email_arr = []
 #stdin = ''
 #stdout = ''
 #stderr = 0''
-root_path = "F:\DigitalWallet"
-filename = "DigitalWallet.java"
+root_path = "F:\MyCalendar"
+filename = "MyCalendar.java"
 #out = open('output.txt', 'w')
 #def execute_java(roots):
     #cmd = 'java -cp '+roots+' DigitalWalletHidden'
@@ -50,6 +50,7 @@ def return_files(email,extension):
         for name in files:
             if name.endswith(extension):
                 return root+"\\"+name
+    return "Nofile"
 
 def file_similarity(path1, path2):
     with open(path1,'rb') as f1:
@@ -81,11 +82,22 @@ for emails in email_arr:
     if emails not in sim_arr:
         sim_arr.append(emails)
     path1 = return_files(emails,filename)
+    #print path1
     while i < len(sim_arr):
         for name in sim_arr:
             path2 = return_files(name,filename)
-            out.write(str(file_similarity(path1,path2))+'\t')
-            out2.write(str(lev_similarity(path1,path2))+'\t')
+            if path1 != "Nofile" and path2 != "Nofile":
+                out.write(str(file_similarity(path1,path2))+'\t')
+                out2.write(str(lev_similarity(path1,path2))+'\t')
+            else:
+                if path1 == "Nofile":
+                    out.write('No File' + '\t')
+                    out2.write('No File' + '\t')
+                else:
+                    out.write('No File' + '\t')
+                    out2.write('No File' + '\t')
+                    
+                
         #print sim_arr
         i += 1
         #print distance(path1, path2), distance(path2, path1)
