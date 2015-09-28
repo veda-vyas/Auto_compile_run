@@ -14,6 +14,8 @@ email_arr = []
 #stderr = 0''
 root_path = "F:\DigitalWallet"
 filename = "DigitalWallet.java"
+lev_limit =   20
+ratio_limit = 70
 #out = open('output.txt', 'w')
 #def execute_java(roots):
     #cmd = 'java -cp '+roots+' DigitalWalletHidden'
@@ -68,17 +70,25 @@ return_emails(root_path)
 count = 0
 sim_arr = []
 stor_arr = []
-out = open(str(filename[:-5])+'.txt','w')
+out = open(str(filename[:-5])+'CopiedList.txt','w')
+out2 = open(str(filename[:-5])+'.txt','w')
 out.write("Email\tComparing with\tRatio\tLevenshtein Distance\n")
+out2.write("Email\tComparing with\tRatio\tLevenshtein Distance\n")
 for email in email_arr:
     path1 = return_files(email,filename)
     for to_compare_email in email_arr:
         path2 = return_files(to_compare_email,filename)
         if email != to_compare_email:
             if path1 != "Nofile" and path2 != "Nofile":
-                out.write(str(email) +'\t'+ str(to_compare_email) +'\t'+ str(file_similarity(path1,path2)) + '\t' +str(lev_similarity(path1,path2)))
-                out.write('\n')
+                if file_similarity(path1,path2) >= ratio_limit and lev_similarity(path1,path2) <= lev_limit:
+                    out.write(str(email) +'\t'+ str(to_compare_email) +'\t'+ str(file_similarity(path1,path2)) + '\t' +str(lev_similarity(path1,path2)))
+                    out.write('\n')
+                out2.write(str(email) +'\t'+ str(to_compare_email) +'\t'+ str(file_similarity(path1,path2)) + '\t' +str(lev_similarity(path1,path2)))
+                out2.write('\n')
             else:
                 out.write(str(email) +'\t'+ str(to_compare_email) +'\tNo File' + '\t\n')
+                out2.write(str(email) +'\t'+ str(to_compare_email) +'\tNo File' + '\t\n')
     print email
 print "Done"
+out.close()
+out2.close()
